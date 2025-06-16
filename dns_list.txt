@@ -1,0 +1,10 @@
+# DNS Server List
+# Format: Name,PrimaryDNS,SecondaryDNS (optional)
+# Lines starting with # are ignored.
+
+Google,8.8.8.8,8.8.4.4
+Cloudflare,1.1.1.1,1.0.0.1
+ControlD-ads,76.76.2.2,76.76.10.2
+Blahdns.com,78.46.244.143
+Quad9,9.9.9.9,149.112.112.112
+OpenDNS,208.67.222.222,208.67.220.220

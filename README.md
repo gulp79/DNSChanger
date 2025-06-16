@@ -200,3 +200,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⚠️ Important**: This application modifies system network settings. Always ensure you have a way to revert changes if needed. The "Set to Automatic (DHCP)" function can restore default settings.
+
+
+![Downloads](https://img.shields.io/github/downloads/gulp79/DNSChanger/total?style=for-the-badge&labelColor=21262d&color=238636)

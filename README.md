@@ -128,6 +128,18 @@ The application filters network interfaces to show only:
 
 To create a standalone executable:
 
+### Nuitka
+1. **Install Nuitka**:
+   ```bash
+   pip install nuitka ordered-set
+   ```
+
+2. **Build the executable**:
+   ```bash
+   nuitka --standalone --onefile --windows-console-mode=disable --enable-plugin=tk-inter --windows-icon-from-ico=icona.ico dns_changer.py
+   ```
+
+### PyInstaller
 1. **Install PyInstaller**:
    ```bash
    pip install pyinstaller

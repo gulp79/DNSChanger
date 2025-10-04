@@ -7,8 +7,8 @@ import ctypes
 
 # --- Configuration ---
 APP_NAME = "DNS Changer"
-WIDTH = 700
-HEIGHT = 500
+WIDTH = 900
+HEIGHT = 900
 DNS_LIST_FILE = "dns_list.txt"
 
 # --- Theme and Colors ---
@@ -302,9 +302,7 @@ AdGuard DNS,94.140.14.14,94.140.15.15
         else:
             self.update_status("Failed to apply DNS settings. Check permissions.", "red")
         
-        self.after(500, self.populate_interfaces)
-        self.after(1000, self.update_current_dns_display)
-        self.after(1000, self.update_current_dns_display)
+        self.after(500, self.update_current_dns_display)
 
     def get_current_dns(self, interface_index):
         """Ottiene i DNS attualmente configurati per un'interfaccia specifica."""

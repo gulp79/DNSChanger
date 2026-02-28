@@ -1,45 +1,61 @@
-# DNS Changer
+# DNS Changer - Advanced Edition
 
-A modern, dark-themed GUI application for Windows that allows you to easily change DNS settings for your network interfaces. Built with Python and CustomTkinter for a sleek, contemporary interface.
+A modern, feature-rich DNS management tool for Windows with support for DNS over HTTPS (DoH), automatic verification, and intelligent rollback.
 
-![DNS Changer Interface](https://img.shields.io/badge/Platform-Windows-blue) ![Python](https://img.shields.io/badge/Python-3.7+-green) ![License](https://img.shields.io/badge/License-MIT-orange)
+![DNS Changer Interface](https://img.shields.io/badge/Platform-Windows-blue) ![Python](https://img.shields.io/badge/Python-3.12+-green) ![License](https://img.shields.io/badge/License-MIT-orange)
 
-## Features
+## ✨ Features
 
+### Core Functionality
 - 🎨 **Modern Dark Interface**: Sleek dark theme with acid green accents
 - 🔌 **Smart Interface Detection**: Automatically detects and lists only active physical network adapters
-- 📋 **Multiple Interface Support**: Select one or multiple network interfaces simultaneously
-- 🔍 **Current DNS Display**: View currently configured DNS settings for selected interfaces
-- 📝 **Customizable DNS List**: Easy-to-edit text file for managing DNS server presets
-- ⚡ **Quick Actions**: Apply DNS settings or reset to DHCP with one click
-- 🔒 **Administrator Rights**: Automatic elevation to administrator privileges when needed
-- 📊 **Real-time Status**: Live status updates and error handling
+- 📋 **Multiple Interface Support**: Apply DNS settings to one or multiple interfaces simultaneously
+- 🔄 **Automatic Verification**: Test DNS functionality after applying changes
+- ⏱️ **Smart Rollback**: Automatic rollback if DNS verification fails
+- 🔐 **Administrator Rights**: Automatic elevation to administrator privileges when needed
 
-## Screenshots
+### DNS over HTTPS (DoH)
+- 🔒 **Native DoH Support**: Full integration with Windows 11/Server 2022 DoH capabilities
+- 🌐 **Encrypted DNS**: Configure encrypted-only DNS when supported
+- 🚀 **Auto-Upgrade**: Automatically upgrade to DoH when available
+- 📊 **DoH Status Indicators**: Real-time display of DoH configuration status
 
-<img width="707" alt="image" src="https://github.com/user-attachments/assets/209a730b-864b-41eb-a428-bd53e6736dbe" />
+### Configuration Management
+- 📝 **YAML-Based Configuration**: Structured DNS provider definitions
+- 🏷️ **Provider Tags**: Filter and organize DNS providers by tags (privacy, security, ad-block, etc.)
+- 🔄 **Legacy Migration**: Automatic migration from old `dns_list.txt` format
+- ✅ **Schema Validation**: Pydantic-based validation ensures configuration correctness
 
-*Interface showing network adapters, DNS server options, and current DNS settings*
+### Advanced Features
+- 🧪 **DNS Verification**: Test DNS resolution before finalizing changes
+- 📸 **Snapshot & Rollback**: Create snapshots before changes for easy rollback
+- 🗑️ **Cache Flushing**: Optional automatic DNS cache flush after applying changes
+- 📋 **Current Status Display**: View configured DNS servers for each interface
 
-## Prerequisites
+## 📋 Prerequisites
 
-- Windows 10/11
-- Python 3.7 or higher
-- Administrator privileges (the application will request elevation automatically)
+### Required
+- **Windows 10** (20H2 or later) / **Windows 11** / **Windows Server 2019+**
+- **Python 3.12 or higher**
+- **Administrator privileges** (application will request elevation)
 
-## Installation
+### For Full DoH Support
+- **Windows 11** or **Windows Server 2022** or later
+- DoH features are available but limited on Windows 10
+
+## 🚀 Installation
 
 ### Option 1: Run from Source
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/dns-changer.git
-   cd dns-changer
+   git clone https://github.com/gulp79/DNSChanger.git
+   cd DNSChanger
    ```
 
-2. **Install required dependencies**:
+2. **Install dependencies**:
    ```bash
-   pip install customtkinter
+   pip install -r requirements.txt
    ```
 
 3. **Run the application**:
@@ -49,169 +65,308 @@ A modern, dark-themed GUI application for Windows that allows you to easily chan
 
 ### Option 2: Standalone Executable
 
-1. Download the latest release from the [Releases](https://github.com/yourusername/dns-changer/releases) page
+1. Download the latest release from the [Releases](https://github.com/gulp79/DNSChanger/releases) page
 2. Extract the files to a folder
-3. Run `dns_changer.exe`
+3. Run `DNSChanger.exe`
 
-## Usage
+## 📖 Usage
 
 ### First Launch
-1. The application will automatically request administrator privileges
-2. Network interfaces will be loaded and displayed on the left panel
-3. A default `dns_list.txt` file will be created with common DNS servers
 
-### Changing DNS Settings
+1. The application will automatically request administrator privileges
+2. Network interfaces will be loaded and displayed in the left panel
+3. If you have a legacy `dns_list.txt`, you'll be prompted to migrate to the new YAML format
+
+### Applying DNS Settings
+
 1. **Select Interface(s)**: Check one or more network interfaces from the left panel
-2. **View Current Settings**: Selected interfaces' current DNS settings appear in the middle panel
-3. **Choose DNS Server**: Select a DNS server preset from the right panel
-4. **Apply Changes**: Click "Apply Selected DNS" to update the settings
+2. **Choose DNS Provider**: Select a DNS provider from the right panel
+3. **Configure DoH** (optional): Toggle "Use DoH" to enable DNS over HTTPS
+4. **Apply Changes**: Click "Apply DNS Settings"
+5. **Verification**: DNS will be verified automatically
+6. **Confirm**: If verification passes, changes are applied permanently
+
+### DNS over HTTPS (DoH)
+
+When DoH is enabled and supported:
+- 🔒 DoH servers are automatically registered with Windows
+- 🔐 Encryption mode is configured based on provider policy
+- ✅ DoH status is displayed for each interface
+- ⚠️ Fallback options are configured according to provider settings
+
+### Automatic Rollback
+
+If DNS verification fails after applying settings:
+- ⏱️ A 30-second countdown timer starts
+- 🔄 Previous DNS configuration is automatically restored
+- ⚠️ You'll be notified of the rollback
 
 ### Resetting to DHCP
+
 1. Select the interface(s) you want to reset
-2. Click "Set to Automatic (DHCP)" to revert to automatic DNS assignment
+2. Click "Reset to DHCP"
+3. DNS settings will be restored to automatic configuration
 
-### Refreshing Interfaces
-- Click "Refresh Interfaces" to reload the network adapter list
-- Useful when connecting/disconnecting network devices
+## ⚙️ Configuration
 
-## DNS Server Configuration
+### DNS Providers File (`dns_providers.yaml`)
 
-The application reads DNS server presets from `dns_list.txt`. The format is:
+The application uses a structured YAML file for DNS provider definitions:
+
+```yaml
+version: 1
+providers:
+  - name: "Cloudflare"
+    ipv4: ["1.1.1.1", "1.0.0.1"]
+    doh_template: "https://cloudflare-dns.com/dns-query"
+    tags: ["privacy", "fast", "public"]
+    policy:
+      encrypted_only: true
+      autoupgrade: true
+      allow_udp_fallback: false
+  
+  - name: "Google DNS"
+    ipv4: ["8.8.8.8", "8.8.4.4"]
+    doh_template: "https://dns.google/dns-query"
+    tags: ["public", "fast"]
+    policy:
+      encrypted_only: true
+      autoupgrade: true
+      allow_udp_fallback: false
 ```
-# DNS Server List
-# Format: Name,Primary DNS,Secondary DNS
-Google DNS,8.8.8.8,8.8.4.4
-Cloudflare DNS,1.1.1.1,1.0.0.1
-OpenDNS,208.67.222.222,208.67.220.220
-Quad9,9.9.9.9,149.112.112.112
-AdGuard DNS,94.140.14.14,94.140.15.15
+
+### Provider Fields
+
+- **name**: Display name for the provider
+- **ipv4**: List of IPv4 DNS server addresses (required)
+- **ipv6**: List of IPv6 DNS server addresses (optional)
+- **doh_template**: DoH template URL for encrypted DNS (optional)
+- **tags**: Categorization tags (privacy, security, ad-block, etc.)
+- **policy**: DoH policy configuration
+  - **encrypted_only**: Require encrypted DNS only (Windows 11+)
+  - **autoupgrade**: Automatically upgrade to DoH when available
+  - **allow_udp_fallback**: Allow fallback to unencrypted DNS
+
+### Adding Custom DNS Providers
+
+1. Edit `dns_providers.yaml`
+2. Add your provider following the schema above
+3. Restart the application or click "Refresh"
+
+## 🔄 Migrating from Legacy Format
+
+If you have an existing `dns_list.txt` file:
+
+1. Click "Migrate from dns_list.txt" button
+2. The tool will automatically convert entries to YAML format
+3. A backup of any existing `dns_providers.yaml` will be created
+4. Review the migrated providers
+
+The legacy format was:
+```
+# Format: Name,PrimaryDNS,SecondaryDNS
+Google,8.8.8.8,8.8.4.4
+Cloudflare,1.1.1.1,1.0.0.1
 ```
 
-### Adding Custom DNS Servers
-1. Open `dns_list.txt` in any text editor
-2. Add new entries following the format: `Name,Primary DNS,Secondary DNS`
-3. Save the file and restart the application or use "Refresh Interfaces"
+## 🛠️ Building from Source
 
-## Technical Details
+### Using PyInstaller
+
+```bash
+pip install pyinstaller
+pyinstaller DNSChanger.spec
+```
+
+The executable will be created in the `dist/` folder.
+
+### Using Nuitka
+
+```bash
+pip install nuitka ordered-set
+python -m nuitka --standalone --onefile --windows-console-mode=disable --enable-plugin=tk-inter --windows-icon-from-ico=icona.ico --windows-uac-admin dns_changer.py
+```
+
+### GitHub Actions (Automated Builds)
+
+The project includes GitHub Actions workflows for automated builds:
+- **PyInstaller Build**: `.github/workflows/build-pyinstaller.yml`
+- **Nuitka Build**: `.github/workflows/build-nuitka.yml`
+
+Workflows can be triggered manually from the Actions tab.
+
+## 🔧 Technical Details
+
+### Architecture
+
+```
+dnschanger/
+├── core/               # Business logic
+│   ├── dns_loader.py   # YAML provider loading
+│   ├── dns_verifier.py # DNS verification & rollback
+│   └── migration.py    # Legacy migration
+├── ps/                 # PowerShell integration
+│   ├── ps_adapter.py   # Windows DNS management
+│   └── doh_manager.py  # DoH configuration
+├── models/             # Data models (Pydantic)
+│   └── dns_provider.py # Provider schema
+└── ui/                 # User interface (CustomTkinter)
+    └── main_window.py  # Main application window
+```
 
 ### PowerShell Commands Used
-The application uses the following PowerShell commands for DNS management:
 
-- **List Network Adapters**: 
-  ```powershell
-  Get-NetAdapter | Where-Object { $_.Status -eq 'Up' ... }
-  ```
+The application uses the following PowerShell cmdlets:
 
-- **Set DNS Servers**:
-  ```powershell
-  Set-DnsClientServerAddress -InterfaceIndex <ID> -ServerAddresses ("8.8.8.8","1.1.1.1")
-  ```
+#### Network Adapters
+```powershell
+Get-NetAdapter | Where-Object { $_.Status -eq 'Up' }
+```
 
-- **Reset to DHCP**:
-  ```powershell
-  Set-DnsClientServerAddress -InterfaceIndex <ID> -ResetServerAddresses
-  ```
+#### DNS Configuration
+```powershell
+# Set DNS servers
+Set-DnsClientServerAddress -InterfaceIndex <ID> -ServerAddresses ("8.8.8.8","1.1.1.1") -Validate
 
-- **Get Current DNS**:
-  ```powershell
-  Get-DnsClientServerAddress -InterfaceIndex <ID>
-  ```
+# Reset to DHCP
+Set-DnsClientServerAddress -InterfaceIndex <ID> -ResetServerAddresses
 
-### Interface Filtering
-The application filters network interfaces to show only:
-- Interfaces with "Up" status
-- Non-virtual interfaces (excludes VMware, VirtualBox, Hyper-V, etc.)
-- Non-loopback interfaces
-- Interfaces with valid media types
+# Get current DNS
+Get-DnsClientServerAddress -InterfaceIndex <ID>
+```
 
-## Building from Source
+#### DoH Configuration (Windows 11+)
+```powershell
+# Register DoH server
+Add-DnsClientDohServerAddress -ServerAddress "1.1.1.1" `
+  -DohTemplate "https://cloudflare-dns.com/dns-query" `
+  -AutoUpgrade:$true -AllowFallbackToUdp:$false
 
-To create a standalone executable:
+# List DoH servers
+Get-DnsClientDohServerAddress
 
-### Nuitka
-1. **Install Nuitka**:
-   ```bash
-   pip install nuitka ordered-set
-   ```
+# Configure interface encryption
+Set-NetDnsTransitionConfiguration -InterfaceIndex <ID> `
+  -Protocol DoH -OnlyUseEncryption $true
+```
 
-2. **Build the executable**:
-   ```bash
-   nuitka --standalone --onefile --windows-console-mode=disable --enable-plugin=tk-inter --windows-icon-from-ico=icona.ico dns_changer.py
-   ```
+#### DNS Verification
+```powershell
+# Test DNS resolution
+Resolve-DnsName -Name example.com -DnsOnly -QuickTimeout
 
-### PyInstaller
-1. **Install PyInstaller**:
-   ```bash
-   pip install pyinstaller
-   ```
+# Flush DNS cache
+ipconfig /flushdns
+```
 
-2. **Build the executable**:
-   ```bash
-   pyinstaller --icon="icona.ico" --noconsole --name DNSChanger --onefile --windowed --uac-admin --add-data "dns_list.txt;." dns_changer.py
-   ```
-
-3. **The executable will be created in the `dist` folder**
-
-## Troubleshooting
+## 🐛 Troubleshooting
 
 ### Common Issues
+
+**"DoH not supported"**
+- DoH requires Windows 11 or Windows Server 2022 or later
+- Check your Windows version: `winver`
+- Basic DNS functionality works on Windows 10
+
+**"Access denied" or "Administrator rights required"**
+- Right-click the application and select "Run as administrator"
+- The application should automatically request elevation
 
 **"No active network adapters found"**
 - Ensure you're running as administrator
 - Check that your network adapters are connected and enabled
 - Try clicking "Refresh Interfaces"
 
-**"PowerShell Error"**
-- Verify PowerShell is installed and accessible
-- Check that execution policy allows script execution
-- Ensure you have administrator privileges
-
-**"Administrator rights are required"**
-- Right-click the application and select "Run as administrator"
-- The application should normally request elevation automatically
-
-**DNS changes not taking effect**
+**"DNS changes not taking effect"**
 - Some applications may cache DNS settings
-- Try restarting your browser or flushing DNS cache: `ipconfig /flushdns`
+- Try flushing DNS cache: `ipconfig /flushdns`
+- Restart your browser or the affected application
 - Restart the network adapter if necessary
 
-### Logging and Debugging
-The application provides real-time status updates in the bottom status bar. Error messages will appear in red, warnings in orange, and success messages in green.
+**"DNS verification failed"**
+- Check if your DNS servers are reachable
+- Verify that firewall rules allow DNS traffic
+- Try a different DNS provider
+- The application will automatically rollback to previous settings
 
-## Contributing
+**"DoH blocked by policy"**
+- Your organization may have disabled DoH via Group Policy
+- Contact your system administrator
+- Basic DNS functionality remains available
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+### Logging
+
+The application creates a log file: `dnschanger.log`
+
+Check this file for detailed error messages and debugging information.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ### Development Setup
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature-name`
 3. Make your changes
-4. Test thoroughly on Windows
-5. Submit a pull request
+4. Add tests if applicable
+5. Test thoroughly on Windows
+6. Submit a pull request
 
-## License
+### Code Style
+
+- Follow PEP 8 guidelines
+- Use type hints
+- Add docstrings to functions and classes
+- Keep functions focused and modular
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
 - Built with [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) for the modern GUI
-- Uses Windows PowerShell for network configuration
-- Inspired by the need for a simple, visual DNS management tool
+- Uses [Pydantic](https://pydantic-docs.helpmanual.io/) for data validation
+- Uses [PyYAML](https://pyyaml.org/) for configuration parsing
+- Windows PowerShell for network configuration
+- Inspired by the need for a modern, visual DNS management tool with DoH support
 
-## Changelog
+## 📝 Changelog
+
+### v2.0.0 (Advanced Edition)
+- ✨ **NEW**: DNS over HTTPS (DoH) support for Windows 11/Server 2022
+- ✨ **NEW**: YAML-based DNS provider configuration with schema validation
+- ✨ **NEW**: Automatic DNS verification with smart rollback
+- ✨ **NEW**: Provider tags and filtering system
+- ✨ **NEW**: Migration tool for legacy dns_list.txt format
+- ✨ **NEW**: DNS cache flushing option
+- ✨ **NEW**: Real-time DoH status indicators
+- ✨ **NEW**: Snapshot and rollback functionality
+- ✨ **NEW**: Modular architecture with separated concerns
+- 🔧 **IMPROVED**: Enhanced error handling and user feedback
+- 🔧 **IMPROVED**: More reliable network adapter detection
+- 🔧 **IMPROVED**: Better Windows version detection
+- 📚 **IMPROVED**: Comprehensive documentation and examples
 
 ### v1.0.0
 - Initial release
 - Basic DNS changing functionality
 - Modern dark theme interface
 - Multiple interface selection
-- Current DNS settings display
-- Automatic DNS server list creation
 
 ---
 
-**⚠️ Important**: This application modifies system network settings. Always ensure you have a way to revert changes if needed. The "Set to Automatic (DHCP)" function can restore default settings.
+## ⚠️ Important Notes
 
+- This application modifies system network settings
+- Always ensure you have a way to revert changes if needed
+- The "Reset to DHCP" function can restore default settings
+- DoH features require Windows 11 or Server 2022 or later
+- Administrator privileges are required for all network changes
+
+---
+
+**Made with ❤️ for better DNS management on Windows**
 
 ![Downloads](https://img.shields.io/github/downloads/gulp79/DNSChanger/total?style=for-the-badge&labelColor=21262d&color=238636)

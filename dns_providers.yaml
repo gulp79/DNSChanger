@@ -1,0 +1,126 @@
+version: 1
+providers:
+  # --- CLASSICI / PRIVACY ---
+  - name: "Cloudflare"
+    ipv4: ["1.1.1.1", "1.0.0.1"]
+    doh_template: "https://cloudflare-dns.com/dns-query"
+    tags: ["public", "privacy", "fast", "no-filter"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "Google DNS"
+    ipv4: ["8.8.8.8", "8.8.4.4"]
+    doh_template: "https://dns.google/dns-query"
+    tags: ["public", "fast", "no-filter"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "OpenDNS (Cisco)"
+    ipv4: ["208.67.222.222", "208.67.220.220"]
+    doh_template: "https://doh.opendns.com/dns-query"
+    tags: ["public", "security", "no-filter"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "Quad9 (Secure)"
+    ipv4: ["9.9.9.9", "149.112.112.112"]
+    doh_template: "https://dns.quad9.net/dns-query"
+    tags: ["public", "security", "malware-blocking", "dnssec"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  # --- AD-BLOCK / FAMILY / SECURITY ---
+  - name: "Cloudflare Families (Malware)"
+    ipv4: ["1.1.1.2", "1.0.0.2"]
+    doh_template: "https://security.cloudflare-dns.com/dns-query"
+    tags: ["public", "security", "malware-blocking", "family"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "Cloudflare Families (Malware + Adult)"
+    ipv4: ["1.1.1.3", "1.0.0.3"]
+    doh_template: "https://family.cloudflare-dns.com/dns-query"
+    tags: ["public", "family", "adult-block", "malware-blocking"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "OpenDNS FamilyShield"
+    ipv4: ["208.67.222.123", "208.67.220.123"]
+    doh_template: "https://doh.familyshield.opendns.com/dns-query"
+    tags: ["family", "adult-block"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "AdGuard DNS (Default)"
+    ipv4: ["94.140.14.14", "94.140.15.15"]
+    doh_template: "https://dns.adguard-dns.com/dns-query"
+    tags: ["ad-block", "tracker-block", "phishing-block"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "AdGuard DNS (Family Protection)"
+    ipv4: ["94.140.14.15", "94.140.15.16"]
+    doh_template: "https://family.adguard-dns.com/dns-query"
+    tags: ["family", "adult-block", "ad-block", "safe-search"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "AdGuard DNS (Non-filtering)"
+    ipv4: ["94.140.14.140", "94.140.14.141"]
+    doh_template: "https://unfiltered.adguard-dns.com/dns-query"
+    tags: ["no-filter", "privacy"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "CleanBrowsing (Family Filter)"
+    ipv4: ["185.228.168.168", "185.228.169.168"]
+    doh_template: "https://doh.cleanbrowsing.org/doh/family-filter/"
+    tags: ["family", "adult-block", "safe-search", "proxy-vpn-block"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "CleanBrowsing (Adult Filter)"
+    ipv4: ["185.228.168.10", "185.228.169.11"]
+    doh_template: "https://doh.cleanbrowsing.org/doh/adult-filter/"
+    tags: ["adult-block", "safe-search"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "CleanBrowsing (Security Filter)"
+    ipv4: ["185.228.168.9", "185.228.169.9"]
+    doh_template: "https://doh.cleanbrowsing.org/doh/security-filter/"
+    tags: ["security", "malware-blocking", "phishing-block"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  # --- CONTROLD (profili gratuiti) ---
+  - name: "ControlD (Unfiltered)"
+    ipv4: ["76.76.2.0", "76.76.10.0"]
+    doh_template: "https://freedns.controld.com/p0"
+    tags: ["no-filter", "privacy"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "ControlD (Malware)"
+    ipv4: ["76.76.2.1", "76.76.10.1"]
+    doh_template: "https://freedns.controld.com/p1"
+    tags: ["security", "malware-blocking"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "ControlD (Ads & Tracking)"
+    ipv4: ["76.76.2.2", "76.76.10.2"]
+    doh_template: "https://freedns.controld.com/p2"
+    tags: ["ad-block", "tracker-block"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "ControlD (Family Friendly)"
+    ipv4: ["76.76.2.4", "76.76.10.4"]
+    doh_template: "https://freedns.controld.com/family"
+    tags: ["family", "adult-block", "malware-blocking"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "ControlD (Uncensored)"
+    ipv4: ["76.76.2.5", "76.76.10.5"]
+    doh_template: "https://freedns.controld.com/uncensored"
+    tags: ["no-filter"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  # --- I TUOI PRESET ORIGINALE / COMBO ---
+  - name: "OpenDNS (classico)"
+    ipv4: ["208.67.222.222", "208.67.220.220"]
+    doh_template: "https://doh.opendns.com/dns-query"
+    tags: ["public", "no-filter"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }
+
+  - name: "Mixed Google+Cloudflare (IPv4)"
+    ipv4: ["8.8.8.8", "1.1.1.1"]
+   # due provider diversi: scegliere DoH per uno solo o lasciare nullo
+    doh_template: "https://security.cloudflare-dns.com/dns-query"
+    tags: ["custom", "no-filter"]
+    policy: { encrypted_only: true, autoupgrade: true, allow_udp_fallback: false }

@@ -1,0 +1,37 @@
+# Include documentation
+include README.md
+include LICENSE
+include CHANGELOG.md
+include CONTRIBUTING.md
+include DEPLOYMENT.md
+include PROJECT_SUMMARY.md
+
+# Include configuration files
+include dns_providers.yaml
+include dns_providers_enterprise_example.yaml
+include pytest.ini
+include .gitignore
+
+# Include spec files for building
+include DNSChanger.spec
+
+# Include all YAML files
+recursive-include . *.yaml
+recursive-include . *.yml
+
+# Include all markdown files
+recursive-include . *.md
+
+# Exclude unnecessary files
+recursive-exclude tests *
+recursive-exclude scripts *
+recursive-exclude .github *
+exclude build.py
+exclude setup.py
+
+# Exclude build artifacts
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude __pycache__
+global-exclude .DS_Store
+global-exclude *.log

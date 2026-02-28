@@ -1,0 +1,126 @@
+version: 1
+providers:
+  # ========================================
+  # ENTERPRISE DNS PROVIDERS EXAMPLE
+  # ========================================
+  # This is an example configuration for enterprise environments.
+  # Customize the providers below for your organization.
+  
+  # --- INTERNAL DNS SERVERS ---
+  # Replace with your organization's internal DNS servers
+  - name: "Internal DNS (Primary)"
+    ipv4: ["10.0.0.1", "10.0.0.2"]
+    # ipv6: ["fd00::1", "fd00::2"]  # Uncomment if using IPv6
+    doh_template: null  # Internal DNS typically doesn't use DoH
+    tags: ["internal", "enterprise", "primary"]
+    policy:
+      encrypted_only: false
+      autoupgrade: false
+      allow_udp_fallback: true
+  
+  - name: "Internal DNS (Secondary)"
+    ipv4: ["10.0.1.1", "10.0.1.2"]
+    tags: ["internal", "enterprise", "secondary", "failover"]
+    policy:
+      encrypted_only: false
+      autoupgrade: false
+      allow_udp_fallback: true
+  
+  # --- PUBLIC DNS WITH DOH (For Remote Workers) ---
+  - name: "Cloudflare (Corporate)"
+    ipv4: ["1.1.1.1", "1.0.0.1"]
+    doh_template: "https://cloudflare-dns.com/dns-query"
+    tags: ["public", "remote", "doh", "privacy"]
+    policy:
+      encrypted_only: true
+      autoupgrade: true
+      allow_udp_fallback: false
+  
+  - name: "Quad9 (Security Enhanced)"
+    ipv4: ["9.9.9.9", "149.112.112.112"]
+    doh_template: "https://dns.quad9.net/dns-query"
+    tags: ["public", "security", "malware-blocking", "remote"]
+    policy:
+      encrypted_only: true
+      autoupgrade: true
+      allow_udp_fallback: false
+  
+  # --- FILTERED DNS (Content Control) ---
+  - name: "Cloudflare Families (Malware)"
+    ipv4: ["1.1.1.2", "1.0.0.2"]
+    doh_template: "https://security.cloudflare-dns.com/dns-query"
+    tags: ["filtered", "security", "malware-blocking"]
+    policy:
+      encrypted_only: true
+      autoupgrade: true
+      allow_udp_fallback: false
+  
+  - name: "OpenDNS FamilyShield"
+    ipv4: ["208.67.222.123", "208.67.220.123"]
+    doh_template: "https://doh.familyshield.opendns.com/dns-query"
+    tags: ["filtered", "family", "content-control"]
+    policy:
+      encrypted_only: true
+      autoupgrade: true
+      allow_udp_fallback: false
+  
+  # --- DEVELOPMENT & TESTING ---
+  - name: "Google DNS (Testing)"
+    ipv4: ["8.8.8.8", "8.8.4.4"]
+    doh_template: "https://dns.google/dns-query"
+    tags: ["testing", "development", "public"]
+    policy:
+      encrypted_only: false
+      autoupgrade: true
+      allow_udp_fallback: true
+  
+  # --- LOCATION-SPECIFIC ---
+  # Example: Different DNS for different office locations
+  - name: "Office US - East Coast"
+    ipv4: ["10.10.0.1", "10.10.0.2"]
+    tags: ["internal", "us", "east", "office"]
+    policy:
+      encrypted_only: false
+      autoupgrade: false
+      allow_udp_fallback: true
+  
+  - name: "Office EU - Frankfurt"
+    ipv4: ["10.20.0.1", "10.20.0.2"]
+    tags: ["internal", "eu", "frankfurt", "office"]
+    policy:
+      encrypted_only: false
+      autoupgrade: false
+      allow_udp_fallback: true
+
+# ========================================
+# CONFIGURATION NOTES
+# ========================================
+#
+# Tag Conventions:
+# - internal: Internal company DNS servers
+# - public: Public DNS providers
+# - enterprise: Enterprise-grade services
+# - remote: Suitable for remote workers
+# - doh: DNS over HTTPS enabled
+# - security: Security-focused (malware blocking, etc.)
+# - filtered: Content filtering enabled
+# - testing: For development/testing only
+# - Location tags: us, eu, asia, office, datacenter, etc.
+#
+# Policy Settings:
+# - encrypted_only: Requires DoH (Windows 11+ only)
+# - autoupgrade: Automatically use DoH when available
+# - allow_udp_fallback: Allow fallback to unencrypted DNS
+#
+# Best Practices:
+# 1. Keep internal DNS without DoH for compatibility
+# 2. Enable DoH for remote workers and public DNS
+# 3. Use tags to organize providers by department, location, purpose
+# 4. Test configuration before deployment: python scripts/validate_config.py
+# 5. Document custom providers for your team
+#
+# Deployment:
+# 1. Customize this file for your organization
+# 2. Validate: python scripts/validate_config.py dns_providers_enterprise.yaml
+# 3. Rename to dns_providers.yaml or place in application directory
+# 4. Deploy with DNSChanger executable

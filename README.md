@@ -1,10 +1,14 @@
 # DNS Changer - Advanced Edition
+[![GitHub release](https://img.shields.io/github/v/release/gulp79/DNSChanger?include_prereleases)](https://github.com/gulp79/DNSChanger/releases/latest)
+![Total Downloads](https://img.shields.io/github/downloads/gulp79/DNSChanger/total)
+![Latest Downloads](https://img.shields.io/github/downloads/gulp79/DNSChanger/latest/total)
+![DNS Changer Interface](https://img.shields.io/badge/Platform-Windows-blue)
+![Python](https://img.shields.io/badge/Python-3.12+-green)
+![License](https://img.shields.io/badge/License-MIT-orange)
 
 A modern, feature-rich DNS management tool for Windows with support for DNS over HTTPS (DoH), automatic verification, and intelligent rollback.
 
 <img width="1488" height="1385" alt="image" src="https://github.com/user-attachments/assets/a62b6941-547a-4707-a0f5-26dab398702d" />
-
-![DNS Changer Interface](https://img.shields.io/badge/Platform-Windows-blue) ![Python](https://img.shields.io/badge/Python-3.12+-green) ![License](https://img.shields.io/badge/License-MIT-orange)
 
 ## ✨ Features
 

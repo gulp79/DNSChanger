@@ -2,6 +2,8 @@
 
 A modern, feature-rich DNS management tool for Windows with support for DNS over HTTPS (DoH), automatic verification, and intelligent rollback.
 
+<img width="1488" height="1385" alt="image" src="https://github.com/user-attachments/assets/a62b6941-547a-4707-a0f5-26dab398702d" />
+
 ![DNS Changer Interface](https://img.shields.io/badge/Platform-Windows-blue) ![Python](https://img.shields.io/badge/Python-3.12+-green) ![License](https://img.shields.io/badge/License-MIT-orange)
 
 ## ✨ Features
